@@ -1,0 +1,15 @@
+en:
+  Zazama\Analytics\Controllers\AnalyticsController:
+    MENUTITLE: 'Analytics'
+  Zazama\Analytics\Forms\AnalyticsBrowserField:
+    TITLE: 'Browsers'
+  Zazama\Analytics\Forms\AnalyticsBrowserVersionField:
+    TITLE: 'Browser versions'
+  Zazama\Analytics\Forms\AnalyticsDeviceField:
+    TITLE: 'Devices'
+  Zazama\Analytics\Forms\AnalyticsHitsField:
+    TITLE: 'Daily visitors'
+  Zazama\Analytics\Forms\AnalyticsOSField:
+    TITLE: 'Operating Systems'
+  Zazama\Analytics\Forms\AnalyticsUrlsField:
+    TITLE: 'Most viewed URLs'

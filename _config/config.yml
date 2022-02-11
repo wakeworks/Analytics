@@ -1,0 +1,20 @@
+---
+Name: analyticsrequestprocessor
+After:
+  - requestprocessors
+---
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\Control\Director:
+    properties:
+      Middlewares:
+        CustomMiddleware: '%$Zazama\Analytics\Middlewares\AnalyticsProcessorMiddleware'
+
+SilverStripe\Control\Controller:
+  extensions:
+    - Zazama\Analytics\Extensions\ControllerExtension
+
+SilverStripe\Admin\LeftAndMain:
+  extra_requirements_javascript:
+    - 'zazama/analytics:client/dist/js/bundle.js'
+  extra_requirements_css:
+    - 'zazama/analytics:client/dist/styles/bundle.css'

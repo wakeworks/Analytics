@@ -1,0 +1,45 @@
+.analytics-form-field-group {
+    max-width: none;
+}
+
+.analytics-field {
+    display: inline-block;
+    vertical-align: top;
+
+    .form__field-label {
+        font-size: 1.2em;
+        text-align: center;
+        margin-bottom: 0;
+        padding-bottom: 0.5em;
+        background: #005a93;
+        padding-top: 0.5em;
+        color: #fff;
+        width: 100%;
+    }
+
+    &.form-group {
+        padding: 0 1em;
+        width: auto;
+
+        &:after {
+            border-bottom: 0 none;
+        }
+
+        .form__field-holder > div {
+            background-color: transparent;
+        }
+    }
+
+    &__box {
+        background-color: #fff;
+        border-radius: 3px;
+        overflow: hidden;
+        padding: 2rem 1rem;
+    }
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+}
