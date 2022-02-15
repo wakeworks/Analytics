@@ -31,11 +31,12 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         }
 
         $analytics = Injector::inst()->get(Analytics::class);
+        $analytics->enable();
         $analytics->setAnalyticsLog(new AnalyticsLog());
 
         if(is_int($this->config()->get('gc_divisor')) && $this->config()->get('gc_divisor') > 0) {
-            $randomNumber = mt_rand(0, $this->config()->get('gc_divisor'));
-            if($randomNumber === 0) {
+            $randomNumber = mt_rand(1, $this->config()->get('gc_divisor'));
+            if($randomNumber === 1) {
                 (new AnalyticsGarbageCollectionTask())->run($request, true);
             }
         }
