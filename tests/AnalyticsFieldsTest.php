@@ -1,15 +1,19 @@
 <?php
 
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\FunctionalTest;
 use Zazama\Analytics\Forms\AnalyticsBrowserField;
 use Zazama\Analytics\Forms\AnalyticsBrowserVersionField;
 use Zazama\Analytics\Forms\AnalyticsDeviceField;
 use Zazama\Analytics\Forms\AnalyticsHitsField;
 use Zazama\Analytics\Forms\AnalyticsOSField;
+use Zazama\Analytics\Middlewares\AnalyticsProcessorMiddleware;
 
 class AnalyticsFieldsTest extends FunctionalTest
 {
     protected $usesDatabase = true;
+
+    protected static $fixture_file = 'AnalyticsFieldsTest.yml';
 
     private $user_agents = [
         // Chrome 60
@@ -29,14 +33,21 @@ class AnalyticsFieldsTest extends FunctionalTest
     public function setUp(): void {
         parent::setUp();
 
+        $homePage = $this->objFromFixture('Page', 'home');
+        $homePage->doPublish();
+        $this->get('home');
+
+        Config::modify()->update(AnalyticsProcessorMiddleware::class, 'image_verification', false);
+
         foreach($this->user_agents as $userAgent) {
             $_SERVER['HTTP_USER_AGENT'] = $userAgent;
-            $this->get('home/');
+            $this->session()->clearAll();
+            $this->get('home');
         }
     }
 
     public function testBrowserField() {
-        $result = json_decode(AnalyticsBrowserField::json(), true);
+        $result = AnalyticsBrowserField::create()->getSchemaStateDefaults()['chartData'];
 
         $this->assertEquals([
             'Chrome' => 1,
@@ -48,7 +59,7 @@ class AnalyticsFieldsTest extends FunctionalTest
     }
 
     public function testBrowserVersionField() {
-        $result = json_decode(AnalyticsBrowserVersionField::json(), true);
+        $result = AnalyticsBrowserVersionField::create()->getSchemaStateDefaults()['chartData'];
 
         $this->assertEquals([
             'Chrome 60.0' => 1,
@@ -61,7 +72,7 @@ class AnalyticsFieldsTest extends FunctionalTest
     }
 
     public function testDeviceField() {
-        $result = json_decode(AnalyticsDeviceField::json(), true);
+        $result = AnalyticsDeviceField::create()->getSchemaStateDefaults()['chartData'];
 
         $this->assertEquals([
             'desktop' => 4,
@@ -71,7 +82,7 @@ class AnalyticsFieldsTest extends FunctionalTest
     }
 
     public function testOSField() {
-        $result = json_decode(AnalyticsOSField::json(), true);
+        $result = AnalyticsOSField::create()->getSchemaStateDefaults()['chartData'];
 
         $this->assertEquals([
             'Windows' => 4,
@@ -81,13 +92,22 @@ class AnalyticsFieldsTest extends FunctionalTest
     }
 
     public function testHitsField() {
-        $result = json_decode(AnalyticsHitsField::json(), true);
+        $result = AnalyticsHitsField::create()->getSchemaStateDefaults()['chartData'];
 
         $this->assertEquals([
-            'Start' => date('Y-m-d'),
-            'End' => date('Y-m-d'),
-            'Days' => [
-                date('Y-m-d') => 6
+            'Hits' => [
+                'Start' => date('Y-m-d'),
+                'End' => date('Y-m-d'),
+                'Days' => [
+                    date('Y-m-d') => 6
+                ]
+            ],
+            'Unique' => [
+                'Start' => date('Y-m-d'),
+                'End' => date('Y-m-d'),
+                'Days' => [
+                    date('Y-m-d') => 6
+                ]
             ]
         ], $result);
     }
