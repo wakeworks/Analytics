@@ -1,4 +1,7 @@
 # Analytics for Silverstripe
+## Currently in beta
+
+<br>
 
 ![Packagist Version](https://img.shields.io/packagist/v/Zazama/Analytics?style=flat-square)
 ![GitHub](https://img.shields.io/github/license/Zazama/Analytics?style=flat-square)
@@ -8,7 +11,7 @@
 
 This module enables basic analytics in Silverstripe without saving identifying data.
 
-![Screenshot](https://zazama.de/assets/Uploads/analytics.png?vid=3)
+![Screenshot](docs/images/screenshot.png)
 
 ## Requirements
 
