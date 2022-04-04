@@ -2,12 +2,12 @@
 
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\FunctionalTest;
-use Zazama\Analytics\Forms\AnalyticsBrowserField;
-use Zazama\Analytics\Forms\AnalyticsBrowserVersionField;
-use Zazama\Analytics\Forms\AnalyticsDeviceField;
-use Zazama\Analytics\Forms\AnalyticsHitsField;
-use Zazama\Analytics\Forms\AnalyticsOSField;
-use Zazama\Analytics\Middlewares\AnalyticsProcessorMiddleware;
+use WakeWorks\Analytics\Forms\AnalyticsBrowserField;
+use WakeWorks\Analytics\Forms\AnalyticsBrowserVersionField;
+use WakeWorks\Analytics\Forms\AnalyticsDeviceField;
+use WakeWorks\Analytics\Forms\AnalyticsHitsField;
+use WakeWorks\Analytics\Forms\AnalyticsOSField;
+use WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware;
 
 class AnalyticsFieldsTest extends FunctionalTest
 {

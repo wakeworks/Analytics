@@ -1,19 +1,19 @@
 <?php
 
-namespace Zazama\Analytics\Middlewares;
+namespace WakeWorks\Analytics\Middlewares;
 
 use AnalyticsGarbageCollectionTask;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\Middleware\HTTPMiddleware;
 use DeviceDetector\DeviceDetector;
 use SilverStripe\Admin\AdminRootController;
-use Zazama\Analytics\Models\AnalyticsLog;
+use WakeWorks\Analytics\Models\AnalyticsLog;
 use Defuse\Crypto\Crypto;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Injector\Injector;
-use Zazama\Analytics\Analytics;
-use Zazama\Analytics\Models\AnalyticsURL;
+use WakeWorks\Analytics\Analytics;
+use WakeWorks\Analytics\Models\AnalyticsURL;
 
 class AnalyticsProcessorMiddleware implements HTTPMiddleware {
     use Configurable;

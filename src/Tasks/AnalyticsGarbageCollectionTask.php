@@ -4,8 +4,8 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\BuildTask;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\Queries\SQLDelete;
-use Zazama\Analytics\Middlewares\AnalyticsProcessorMiddleware;
-use Zazama\Analytics\Models\AnalyticsLog;
+use WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware;
+use WakeWorks\Analytics\Models\AnalyticsLog;
 
 class AnalyticsGarbageCollectionTask extends BuildTask {
 

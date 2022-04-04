@@ -1,9 +1,9 @@
 <?php
 
-namespace Zazama\Analytics\Forms;
+namespace WakeWorks\Analytics\Forms;
 
 use SilverStripe\ORM\DataObject;
-use Zazama\Analytics\Models\AnalyticsLog;
+use WakeWorks\Analytics\Models\AnalyticsLog;
 
 class AnalyticsHitsField extends AnalyticsField
 {

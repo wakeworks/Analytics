@@ -1,6 +1,6 @@
 <?php
 
-namespace Zazama\Analytics\Extensions;
+namespace WakeWorks\Analytics\Extensions;
 
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Control\Director;
@@ -8,8 +8,8 @@ use SilverStripe\Core\Extension;
 use SilverStripe\Core\Injector\Injector;
 use SilverStripe\Dev\DevelopmentAdmin;
 use SilverStripe\Security\Security;
-use Zazama\Analytics\Analytics;
-use Zazama\Analytics\Middlewares\AnalyticsProcessorMiddleware;
+use WakeWorks\Analytics\Analytics;
+use WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware;
 
 class ControllerExtension extends Extension {
     public function onAfterInit() {

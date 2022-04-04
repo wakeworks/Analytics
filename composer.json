@@ -1,5 +1,5 @@
 {
-    "name": "zazama/analytics",
+    "name": "wakeworks/analytics",
     "type": "silverstripe-vendormodule",
     "description": "A privacy focused analytics module integrated into Silverstripe",
     "keywords": [
@@ -8,6 +8,10 @@
     ],
     "license": "BSD-3-Clause",
     "authors": [
+        {
+            "name": "wake up page design",
+            "homepage": "https://wake.de"
+        },
         {
             "name": "Jan Metzger",
             "homepage": "https://github.com/Zazama"
@@ -26,8 +30,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Zazama\\Analytics\\": "src/",
-            "Zazama\\Analytics\\Tests\\": "tests/"
+            "WakeWorks\\Analytics\\": "src/",
+            "WakeWorks\\Analytics\\Tests\\": "tests/"
         }
     },
     "extra": {

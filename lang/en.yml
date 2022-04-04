@@ -1,15 +1,15 @@
 en:
-  Zazama\Analytics\Controllers\AnalyticsController:
+  WakeWorks\Analytics\Controllers\AnalyticsController:
     MENUTITLE: 'Analytics'
-  Zazama\Analytics\Forms\AnalyticsBrowserField:
+  WakeWorks\Analytics\Forms\AnalyticsBrowserField:
     TITLE: 'Browsers'
-  Zazama\Analytics\Forms\AnalyticsBrowserVersionField:
+  WakeWorks\Analytics\Forms\AnalyticsBrowserVersionField:
     TITLE: 'Browser versions'
-  Zazama\Analytics\Forms\AnalyticsDeviceField:
+  WakeWorks\Analytics\Forms\AnalyticsDeviceField:
     TITLE: 'Devices'
-  Zazama\Analytics\Forms\AnalyticsHitsField:
+  WakeWorks\Analytics\Forms\AnalyticsHitsField:
     TITLE: 'Daily visitors'
-  Zazama\Analytics\Forms\AnalyticsOSField:
+  WakeWorks\Analytics\Forms\AnalyticsOSField:
     TITLE: 'Operating Systems'
-  Zazama\Analytics\Forms\AnalyticsUrlsField:
+  WakeWorks\Analytics\Forms\AnalyticsUrlsField:
     TITLE: 'Most viewed URLs'

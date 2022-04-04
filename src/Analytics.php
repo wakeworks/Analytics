@@ -1,6 +1,6 @@
 <?php
 
-namespace Zazama\Analytics;
+namespace WakeWorks\Analytics;
 
 class Analytics {
 

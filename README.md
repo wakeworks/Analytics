@@ -3,8 +3,8 @@
 
 <br>
 
-![Packagist Version](https://img.shields.io/packagist/v/Zazama/Analytics?style=flat-square)
-![GitHub](https://img.shields.io/github/license/Zazama/Analytics?style=flat-square)
+![Packagist Version](https://img.shields.io/packagist/v/wakeworks/Analytics?style=flat-square)
+![GitHub](https://img.shields.io/github/license/wakeworks/Analytics?style=flat-square)
 ![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/Zazama/Analytics?style=flat-square)
 
 ## Introduction
@@ -23,7 +23,7 @@ This module was only tested on >= 4.9.
 ## Installation
 
 ```
-composer require zazama/analytics
+composer require wakeworks/analytics
 ```
 
 After a /dev/build, the module will start logging requests. You can find an overview of the data at /admin/analytics.
@@ -43,7 +43,7 @@ While removing unknown User-Agents already takes away a fair share of bots, ther
 In order to remove them from the statistics, you can insert an image tracking code by activating it with the following configuration.
 
 ```yaml
-Zazama\Analytics\Middlewares\AnalyticsProcessorMiddleware:
+WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware:
   image_verification: true
   secret_key: 'InsertARandomEncryptionKeyHere'
 ```
@@ -60,7 +60,7 @@ Use the task `/dev/tasks/AnalyticsGarbageCollectionTask` in order to delete them
 You should do this automatically, by using a cron job or, if that's not possible, by activating the Garbage Collection every xth request via the middleware.
 
 ```yaml
-Zazama\Analytics\Middlewares\AnalyticsProcessorMiddleware:
+WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware:
   # Run AnalyticsGarbageCollectionTask with probability of 1/100
   # => ~ every 100 requests. (Default: 0, off)
   gc_divisor: 100

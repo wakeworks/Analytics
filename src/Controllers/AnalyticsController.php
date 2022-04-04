@@ -1,6 +1,6 @@
 <?php
 
-namespace Zazama\Analytics\Controllers;
+namespace WakeWorks\Analytics\Controllers;
 
 use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Control\HTTPRequest;
@@ -8,12 +8,12 @@ use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
 use SilverStripe\View\Requirements;
-use Zazama\Analytics\Forms\AnalyticsHitsField;
-use Zazama\Analytics\Forms\AnalyticsBrowserField;
-use Zazama\Analytics\Forms\AnalyticsBrowserVersionField;
-use Zazama\Analytics\Forms\AnalyticsDeviceField;
-use Zazama\Analytics\Forms\AnalyticsOSField;
-use Zazama\Analytics\Forms\AnalyticsUrlsField;
+use WakeWorks\Analytics\Forms\AnalyticsHitsField;
+use WakeWorks\Analytics\Forms\AnalyticsBrowserField;
+use WakeWorks\Analytics\Forms\AnalyticsBrowserVersionField;
+use WakeWorks\Analytics\Forms\AnalyticsDeviceField;
+use WakeWorks\Analytics\Forms\AnalyticsOSField;
+use WakeWorks\Analytics\Forms\AnalyticsUrlsField;
 
 class AnalyticsController extends LeftAndMain {
     private static $url_segment = 'analytics';

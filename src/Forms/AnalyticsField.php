@@ -1,14 +1,14 @@
 <?php
 
-namespace Zazama\Analytics\Forms;
+namespace WakeWorks\Analytics\Forms;
 
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FormField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\Queries\SQLSelect;
-use Zazama\Analytics\Middlewares\AnalyticsProcessorMiddleware;
-use Zazama\Analytics\Models\AnalyticsLog;
+use WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware;
+use WakeWorks\Analytics\Models\AnalyticsLog;
 
 class AnalyticsField extends FieldGroup
 {
@@ -16,8 +16,8 @@ class AnalyticsField extends FieldGroup
 
     public function __construct(string $title = null) {
         $this->addExtraClass('analytics-field');
-        $this->setFieldHolderTemplate('Zazama\\Analytics\\Forms\\AnalyticsField');
-        $this->setSmallFieldHolderTemplate('Zazama\\Analytics\\Forms\\AnalyticsField');
+        $this->setFieldHolderTemplate('WakeWorks\\Analytics\\Forms\\AnalyticsField');
+        $this->setSmallFieldHolderTemplate('WakeWorks\\Analytics\\Forms\\AnalyticsField');
         parent::__construct($title, []);
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zazama\Analytics\Models;
+namespace WakeWorks\Analytics\Models;
 
 use SilverStripe\ORM\DataObject;
 

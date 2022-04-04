@@ -1,11 +1,11 @@
 <?php
 
-namespace Zazama\Analytics\Forms;
+namespace WakeWorks\Analytics\Forms;
 
 use DeviceDetector\DeviceDetector;
 use DeviceDetector\Parser\Client\Browser;
 use SilverStripe\ORM\DataObject;
-use Zazama\Analytics\Models\AnalyticsLog;
+use WakeWorks\Analytics\Models\AnalyticsLog;
 
 class AnalyticsBrowserVersionField extends AnalyticsField
 {

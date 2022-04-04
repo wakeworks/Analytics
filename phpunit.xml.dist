@@ -8,7 +8,7 @@
       <directory suffix=".php">tests/</directory>
     </exclude>
   </coverage>
-  <testsuite name="zazama/analytics">
+  <testsuite name="wakeworks/analytics">
     <directory>tests/</directory>
   </testsuite>
 </phpunit>

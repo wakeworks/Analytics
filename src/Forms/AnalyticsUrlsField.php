@@ -1,10 +1,10 @@
 <?php
 
-namespace Zazama\Analytics\Forms;
+namespace WakeWorks\Analytics\Forms;
 
 use SilverStripe\ORM\DataObject;
-use Zazama\Analytics\Models\AnalyticsLog;
-use Zazama\Analytics\Models\AnalyticsURL;
+use WakeWorks\Analytics\Models\AnalyticsLog;
+use WakeWorks\Analytics\Models\AnalyticsURL;
 
 class AnalyticsUrlsField extends AnalyticsField
 {

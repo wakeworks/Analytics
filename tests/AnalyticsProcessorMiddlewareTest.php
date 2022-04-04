@@ -2,10 +2,9 @@
 
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\FunctionalTest;
-use Zazama\Analytics\Middlewares\AnalyticsProcessorMiddleware;
-use Zazama\Analytics\Models\AnalyticsLog;
+use WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware;
+use WakeWorks\Analytics\Models\AnalyticsLog;
 use Defuse\Crypto\Crypto;
-use Zazama\Analytics\Analytics;
 
 class AnalyticsProcessorMiddlewareTest extends FunctionalTest
 {
