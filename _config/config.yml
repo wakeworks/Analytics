@@ -8,6 +8,10 @@ SilverStripe\Core\Injector\Injector:
     properties:
       Middlewares:
         CustomMiddleware: '%$WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware'
+  Psr\SimpleCache\CacheInterface.analytics:
+    factory: SilverStripe\Core\Cache\CacheFactory
+    constructor:
+      namespace: "analytics"
 
 SilverStripe\Control\Controller:
   extensions:

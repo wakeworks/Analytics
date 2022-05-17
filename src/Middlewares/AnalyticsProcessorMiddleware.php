@@ -8,12 +8,14 @@ use SilverStripe\Control\Middleware\HTTPMiddleware;
 use DeviceDetector\DeviceDetector;
 use SilverStripe\Admin\AdminRootController;
 use WakeWorks\Analytics\Models\AnalyticsLog;
-use Defuse\Crypto\Crypto;
+use Illuminate\Encryption\Encrypter;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Injector\Injector;
 use WakeWorks\Analytics\Analytics;
 use WakeWorks\Analytics\Models\AnalyticsURL;
+use Psr\SimpleCache\CacheInterface;
+use WakeWorks\Analytics\Cache\DeviceDetectorCache;
 
 class AnalyticsProcessorMiddleware implements HTTPMiddleware {
     use Configurable;
@@ -51,7 +53,9 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         }
 
         $userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
         $deviceDetector = new DeviceDetector($userAgent);
+        $deviceDetector->setCache(new DeviceDetectorCache(Injector::inst()->get(CacheInterface::class . '.analytics')));
         $deviceDetector->parse();
 
         /**
@@ -97,8 +101,19 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         $currentModel->write();
 
         if($insertImageTracking) {
-            $encryptedId = Crypto::encryptWithPassword(strval($currentModel->ID), $this->config()->get('secret_key'));
-            $img = '<img src="/?analyticsimage=' . urlencode($encryptedId) . '" style="position: absolute; visibility: hidden;" alt="" />' . "\n";
+            $salt = random_bytes(32);
+            $encryptedId = (new Encrypter(
+                hash_pbkdf2(
+                    'sha256',
+                    $this->config()->get('secret_key'),
+                    $salt,
+                    10000,
+                    32,
+                    true
+                ),
+                'aes-256-cbc'
+            ))->encryptString($currentModel->ID);
+            $img = '<img src="/?analyticsimage=' . urlencode($encryptedId) . '&s=' . urlencode($salt) . '" style="position: absolute; visibility: hidden;" alt="" />' . "\n";
 
             // This is taken from Requirements_Backend
             $newBody = preg_replace(
@@ -119,9 +134,20 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         }
 
         $encryptedId = $request->getVar('analyticsimage');
+        $salt = $request->getVar('s');
 
         try {
-            $id = Crypto::decryptWithPassword($encryptedId, $this->config()->get('secret_key'));
+            $id = (new Encrypter(
+                hash_pbkdf2(
+                    'sha256',
+                    $this->config()->get('secret_key'),
+                    $salt,
+                    10000,
+                    32,
+                    true
+                ),
+                'aes-256-cbc'
+            ))->decryptString($encryptedId);
         } catch(\Exception $e) {
             return new HTTPResponse('Bad request', 400);
         }
