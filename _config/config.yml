@@ -18,7 +18,5 @@ SilverStripe\Control\Controller:
     - WakeWorks\Analytics\Extensions\ControllerExtension
 
 SilverStripe\Admin\LeftAndMain:
-  extra_requirements_javascript:
-    - 'wakeworks/analytics:client/dist/js/bundle.js'
-  extra_requirements_css:
-    - 'wakeworks/analytics:client/dist/styles/bundle.css'
+  extensions:
+    - WakeWorks\Analytics\Extensions\LeftAndMainExtension

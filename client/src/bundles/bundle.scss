@@ -43,3 +43,45 @@
         margin-bottom: 0;
     }
 }
+
+.analytics-hits-field {
+    .days-shown-box {
+        text-align: right;
+
+        &__wrapper {
+            background-color: #ced5e1;
+            border-radius: 50000px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        &__field {
+            float: left;
+
+            input {
+                display: none;
+            }
+
+            label {
+                cursor: pointer;
+                margin-bottom: 0;
+                padding: 5px;
+                transition: all 0.1s ease;
+            }
+
+            &:first-child label {
+                padding-left: 15px;
+            }
+
+            &:last-child label {
+                padding-right: 15px;
+            }
+
+            &.active label {
+                background-color: #005a93;
+                color: #fff;
+            }
+        }
+    }
+}
