@@ -1,6 +1,7 @@
 en:
   WakeWorks\Analytics\Controllers\AnalyticsController:
     MENUTITLE: 'Analytics'
+    ACCESS_HELP: 'Allow viewing of the analytics section.'
   WakeWorks\Analytics\Forms\AnalyticsBrowserField:
     TITLE: 'Browsers'
   WakeWorks\Analytics\Forms\AnalyticsBrowserVersionField:

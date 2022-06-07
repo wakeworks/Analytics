@@ -1,6 +1,7 @@
 de:
   WakeWorks\Analytics\Controllers\AnalyticsController:
     MENUTITLE: 'Statistiken'
+    ACCESS_HELP: 'Erlaubt das Abrufen der Statistiken.'
   WakeWorks\Analytics\Forms\AnalyticsBrowserField:
     TITLE: 'Browser'
   WakeWorks\Analytics\Forms\AnalyticsBrowserVersionField:
