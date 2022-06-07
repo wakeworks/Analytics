@@ -20,16 +20,19 @@ class AnalyticsUrlsField extends Component {
             },
             dataLabels: {
                 enabled: true,
-                textAnchor: 'start',
+                textAnchor: 'center',
                 style: {
                     colors: ['#fff']
                 },
                 formatter: function (val, opt) {
                     return opt.w.globals.labels[opt.dataPointIndex]
                 },
-                offsetX: 0,
-                dropShadow: {
-                    enabled: true
+                offsetX: 10,
+                background: {
+                    enabled: true,
+                    foreColor: '#005a93',
+                    borderWidth: 0,
+                    opacity: 0.75
                 }
             },
             xaxis: {
@@ -37,7 +40,7 @@ class AnalyticsUrlsField extends Component {
             },
             yaxis: {
                 labels: {
-                    show: false
+                    show: false,
                 }
             },
             plotOptions: {
