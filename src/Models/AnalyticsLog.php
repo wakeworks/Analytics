@@ -3,6 +3,8 @@
 namespace WakeWorks\Analytics\Models;
 
 use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Control\HTTPResponse;
 use SilverStripe\ORM\DataObject;
 
 class AnalyticsLog extends DataObject {
@@ -28,4 +30,12 @@ class AnalyticsLog extends DataObject {
     private static $indexes = [
         'Date' => true
     ];
+
+    public function processBeforeDelegate(HTTPRequest $request) {
+        $this->extend('updateProcessBeforeDelegate', $request);
+    }
+
+    public function processAfterDelegate(HTTPRequest $request, HTTPResponse $response) {
+        $this->extend('updateProcessAfterDelegate', $request, $response);
+    }
 }

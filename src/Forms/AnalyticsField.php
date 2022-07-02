@@ -7,6 +7,7 @@ use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FormField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\Queries\SQLSelect;
+use WakeWorks\Analytics\Extensions\SubsitesExtension;
 use WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware;
 use WakeWorks\Analytics\Models\AnalyticsLog;
 
@@ -38,6 +39,16 @@ class AnalyticsField extends FieldGroup
         }
         if(Config::inst()->get(AnalyticsProcessorMiddleware::class, 'image_verification')) {
             $query->addWhere("\"{$table}\".\"IsImageVerified\" = 1");
+        }
+
+        // Check for extensions
+        if(AnalyticsLog::has_extension(SubsitesExtension::class)) {
+            $currentId = \SilverStripe\Subsites\State\SubsiteState::singleton()->getSubsiteId();
+            if($currentId) {
+                $query->addWhere("\"{$table}\".\"SubsiteID\" = {$currentId}");
+            } else {
+                $query->addWhere("\"{$table}\".\"SubsiteID\" = 0 OR \"{$table}\".\"SubsiteID\" IS NULL");
+            }
         }
 
         return $query;

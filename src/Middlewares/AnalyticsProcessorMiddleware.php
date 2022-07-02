@@ -84,6 +84,8 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         $currentModel->BrowserVersion = $deviceDetector->getClient('version') ?? null;
         $currentModel->DeviceType = $deviceDetector->getDevice() ?? -1;
 
+        $currentModel->processBeforeDelegate($request);
+
         $response = $delegate($request);
 
         $url = $request->getURL();
@@ -97,6 +99,8 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
 
         // URLs can change after delegation (e.g. null to home), set after
         if(!$currentModel->URLID) $currentModel->URLID = AnalyticsURL::find_or_create($url)->ID;
+
+        $currentModel->processAfterDelegate($request, $response);
 
         $currentModel->write();
 

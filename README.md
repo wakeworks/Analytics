@@ -70,6 +70,14 @@ WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware:
 
 Only do this if the amount of requests you collect is reasonably small, otherwise the DELETE query might take uncomfortably long for the visitor.
 
+## Extension for Subsites
+If you have `silverstripe/subsites` installed and want to track by Subsite, you can simply enable the `SubsiteExtension` and everything will work out of the box.
+```yaml
+WakeWorks\Analytics\Models\AnalyticsLog:
+  extensions:
+    - WakeWorks\Analytics\Extensions\SubsitesExtension
+```
+
 ## Which information is stored?
 - Current date
 - Requested url
