@@ -7,12 +7,14 @@ use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
 use SilverStripe\Security\PermissionProvider;
+use WakeWorks\Analytics\Extensions\SubsitesExtension;
 use WakeWorks\Analytics\Forms\AnalyticsHitsField;
 use WakeWorks\Analytics\Forms\AnalyticsBrowserField;
 use WakeWorks\Analytics\Forms\AnalyticsBrowserVersionField;
 use WakeWorks\Analytics\Forms\AnalyticsDeviceField;
 use WakeWorks\Analytics\Forms\AnalyticsOSField;
 use WakeWorks\Analytics\Forms\AnalyticsUrlsField;
+use WakeWorks\Analytics\Models\AnalyticsLog;
 
 class AnalyticsController extends LeftAndMain implements PermissionProvider {
     private static $url_segment = 'analytics';
@@ -53,5 +55,9 @@ class AnalyticsController extends LeftAndMain implements PermissionProvider {
                 )
             ]
         ];
+    }
+
+    public function subsiteCMSShowInMenu() {
+        return AnalyticsLog::has_extension(SubsitesExtension::class);
     }
 }

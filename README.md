@@ -47,7 +47,7 @@ WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware:
   image_verification: true
 ```
 
-This method works by inserting a hidden `<img>` tag before `</body>` on every valid tracking request. If a user loads the image, the request will create an entry in the database, otherwise it will it won't.
+This method works by inserting a hidden `<img>` tag before `</body>` on every valid tracking request. If a user loads the image, the request will create an entry in the database, otherwise it won't.
 
 ## Garbage Collection
 After some time, your database will fill up with too many requests that you might not care about anymore (e.g. very old ones).

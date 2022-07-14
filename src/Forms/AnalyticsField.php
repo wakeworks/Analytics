@@ -37,9 +37,6 @@ class AnalyticsField extends FieldGroup
         if($unique) {
             $query->addWhere("\"{$table}\".\"IsFirstVisit\" = 1");
         }
-        if(Config::inst()->get(AnalyticsProcessorMiddleware::class, 'image_verification')) {
-            $query->addWhere("\"{$table}\".\"IsImageVerified\" = 1");
-        }
 
         // Check for extensions
         if(AnalyticsLog::has_extension(SubsitesExtension::class)) {
