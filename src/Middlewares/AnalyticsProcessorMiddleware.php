@@ -15,6 +15,8 @@ use SilverStripe\Core\Injector\Injector;
 use WakeWorks\Analytics\Analytics;
 use WakeWorks\Analytics\Models\AnalyticsURL;
 use Psr\SimpleCache\CacheInterface;
+use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
 use WakeWorks\Analytics\Cache\DeviceDetectorCache;
 
 class AnalyticsProcessorMiddleware implements HTTPMiddleware {
@@ -88,6 +90,7 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         if($this->isAdminUrl($url) ||
            $this->isBlockedUrl($url) ||
            !$this->isAllowedStatusCode($response->getStatusCode()) ||
+           $this->userHasCMSAccess() ||
            $analytics->isDisabled()) {
             return $response;
         }
@@ -182,5 +185,12 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
 
     public function isAllowedStatusCode($statusCode) {
         return $statusCode >= 200 && $statusCode <= 204;
+    }
+
+    public function userHasCMSAccess() {
+        $currentUser = Security::getCurrentUser();
+        if(!$currentUser) return false;
+
+        return Permission::checkMember($currentUser, 'CMS_ACCESS');
     }
 }
