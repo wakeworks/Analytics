@@ -45,15 +45,12 @@ In order to remove them from the statistics, you can insert an image tracking co
 ```yaml
 WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware:
   image_verification: true
-  secret_key: 'InsertARandomEncryptionKeyHere'
 ```
 
-The secret key is used in order to verify that the inserted image link is not forged or makes any information public.
-
-This method works by inserting a hidden `<img>` tag before `</body>` on every valid tracking request. If a user loads the image, the request will be marked as verified in the database, otherwise it will be filtered.
+This method works by inserting a hidden `<img>` tag before `</body>` on every valid tracking request. If a user loads the image, the request will create an entry in the database, otherwise it will it won't.
 
 ## Garbage Collection
-After some time, your database will fill up with too many requests that you might not care about anymore (e.g. very old ones, unverified).
+After some time, your database will fill up with too many requests that you might not care about anymore (e.g. very old ones).
 
 Use the task `/dev/tasks/AnalyticsGarbageCollectionTask` in order to delete them.
 

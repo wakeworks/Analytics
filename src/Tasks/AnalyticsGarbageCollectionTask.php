@@ -35,17 +35,7 @@ class AnalyticsGarbageCollectionTask extends BuildTask {
         $table = DataObject::getSchema()->tableName(AnalyticsLog::class);
         $query = new SQLDelete();
         $query->setFrom("\"{$table}\"");
-        if(Config::inst()->get(AnalyticsProcessorMiddleware::class, 'image_verification')) {
-            $fiveMinutesAgo = new DateTime();
-            $fiveMinutesAgo->sub(new DateInterval('PT' . '5' . 'M'));
-
-            $query->addWhereAny([
-                "\"{$table}\".\"Date\" < '{$removeDate->format('Y-m-d')}'",
-                "(\"{$table}\".\"IsImageVerified\" = 0) AND (\"{$table}\".\"Created\" < '{$fiveMinutesAgo->format('Y-m-d H:i:s')}')"
-            ]);
-        } else {
-            $query->addWhere("\"{$table}\".\"Date\" < '{$removeDate->format('Y-m-d')}'");
-        }
+        $query->addWhere("\"{$table}\".\"Date\" < '{$removeDate->format('Y-m-d')}'");
         $query->execute();
 
         if(!$silent) {
@@ -56,9 +46,6 @@ class AnalyticsGarbageCollectionTask extends BuildTask {
     public function getDescription() {
         $description = "Removes the following analytic logs:\n\n";
         $description .= '- older than ' . Config::inst()->get(AnalyticsProcessorMiddleware::class, 'preserve_for_days') . " days\n";
-        if(Config::inst()->get(AnalyticsProcessorMiddleware::class, 'image_verification')) {
-            $description .= "- image unverified\n";
-        }
 
         return $description;
     }

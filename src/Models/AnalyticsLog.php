@@ -18,8 +18,7 @@ class AnalyticsLog extends DataObject {
         'BrowserName' => 'Varchar(255)',
         'BrowserVersion' => 'Varchar(255)',
         'DeviceType' => 'Int',
-        'IsFirstVisit' => 'Boolean',
-        'IsImageVerified' => 'Boolean'
+        'IsFirstVisit' => 'Boolean'
     ];
 
     private static $has_one = [

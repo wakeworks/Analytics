@@ -8,7 +8,6 @@ use SilverStripe\Control\Middleware\HTTPMiddleware;
 use DeviceDetector\DeviceDetector;
 use SilverStripe\Admin\AdminRootController;
 use WakeWorks\Analytics\Models\AnalyticsLog;
-use Illuminate\Encryption\Encrypter;
 use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Injector\Injector;
@@ -18,12 +17,12 @@ use Psr\SimpleCache\CacheInterface;
 use SilverStripe\Security\Permission;
 use SilverStripe\Security\Security;
 use WakeWorks\Analytics\Cache\DeviceDetectorCache;
+use WakeWorks\Analytics\Models\AnalyticsVerification;
 
 class AnalyticsProcessorMiddleware implements HTTPMiddleware {
     use Configurable;
 
     private static $enabled = true;
-    private static $secret_key = null;
     private static $image_verification = false;
     private static $preserve_for_days = 365;
     private static $gc_divisor = 0;
@@ -46,7 +45,7 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         }
 
         $insertImageTracking = false;
-        if($this->config()->get('image_verification') && $this->config()->get('secret_key')) {
+        if($this->config()->get('image_verification')) {
             if($request->getVar('analyticsimage')) {
                 return $this->processAnalyticsImage($request);
             } else {
@@ -105,22 +104,9 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
             $request->getSession()->set(__CLASS__ . 'Visited', true);
         }
 
-        $currentModel->write();
-
         if($insertImageTracking) {
-            $salt = random_bytes(32);
-            $encryptedId = (new Encrypter(
-                hash_pbkdf2(
-                    'sha256',
-                    $this->config()->get('secret_key'),
-                    $salt,
-                    10000,
-                    32,
-                    true
-                ),
-                'aes-256-cbc'
-            ))->encryptString($currentModel->ID);
-            $img = '<img src="/?analyticsimage=' . urlencode($encryptedId) . '&s=' . urlencode($salt) . '" style="position: absolute; visibility: hidden;" alt="" />' . "\n";
+            $uuid = AnalyticsVerification::generate_and_write($currentModel)->UUID;
+            $img = '<img src="/?analyticsimage=' . urlencode($uuid) . '" style="position: absolute; visibility: hidden;" alt="" />' . "\n";
 
             // This is taken from Requirements_Backend
             $newBody = preg_replace(
@@ -129,6 +115,8 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
                 $response->getBody()
             );
             $response->setBody($newBody);
+        } else {
+            $currentModel->write();
         }
 
         return $response;
@@ -140,31 +128,16 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
             return new HTTPResponse('', 204);
         }
 
-        $encryptedId = $request->getVar('analyticsimage');
-        $salt = $request->getVar('s');
-
-        try {
-            $id = (new Encrypter(
-                hash_pbkdf2(
-                    'sha256',
-                    $this->config()->get('secret_key'),
-                    $salt,
-                    10000,
-                    32,
-                    true
-                ),
-                'aes-256-cbc'
-            ))->decryptString($encryptedId);
-        } catch(\Exception $e) {
+        $uuid = $request->getVar('analyticsimage');
+        $verification = AnalyticsVerification::get_by_uuid($uuid);
+        if(!$verification) {
             return new HTTPResponse('Bad request', 400);
         }
 
-        $model = AnalyticsLog::get_by_id(AnalyticsLog::class, $id);
-        if(!$model || $model->IsImageVerified) {
-            return new HTTPResponse('Bad request', 400);
-        }
-        $model->IsImageVerified = true;
+        $model = $verification->dataToAnalyticsLog();
         $model->write();
+        $verification->delete();
+        AnalyticsVerification::garbage_collection();
         return new HTTPResponse('', 204);
     }
 
