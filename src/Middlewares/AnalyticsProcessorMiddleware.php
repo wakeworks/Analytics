@@ -73,11 +73,6 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         $currentModel = $analytics->getAnalyticsLog();
         $currentModel->Date = date('Y-m-d');
 
-        if(!$request->getSession()->get(__CLASS__ . 'Visited')) {
-            $currentModel->IsFirstVisit = true;
-            $request->getSession()->set(__CLASS__ . 'Visited', true);
-        }
-
         $currentModel->OSName = $deviceDetector->getOs('short_name') ?? null;
         $currentModel->OSVersion = $deviceDetector->getOs('version') ?? null;
         $currentModel->BrowserName = $deviceDetector->getClient('short_name') ?? null;
@@ -101,6 +96,11 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         if(!$currentModel->URLID) $currentModel->URLID = AnalyticsURL::find_or_create($url)->ID;
 
         $currentModel->processAfterDelegate($request, $response);
+
+        if(!$request->getSession()->get(__CLASS__ . 'Visited')) {
+            $currentModel->IsFirstVisit = true;
+            $request->getSession()->set(__CLASS__ . 'Visited', true);
+        }
 
         $currentModel->write();
 
