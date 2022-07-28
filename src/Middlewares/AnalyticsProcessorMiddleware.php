@@ -105,16 +105,19 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         }
 
         if($insertImageTracking) {
-            $uuid = AnalyticsVerification::generate_and_write($currentModel)->UUID;
-            $img = '<img src="/?analyticsimage=' . urlencode($uuid) . '" style="position: absolute; visibility: hidden;" alt="" />' . "\n";
+            $contentTypeHeader = strtolower($response->getHeader('Content-Type'));
+            if(strpos($contentTypeHeader, 'text/html') !== false) {
+                $uuid = AnalyticsVerification::generate_and_write($currentModel)->UUID;
+                $img = '<img src="/?analyticsimage=' . urlencode($uuid) . '" style="position: absolute; visibility: hidden;" alt="" />' . "\n";
 
-            // This is taken from Requirements_Backend
-            $newBody = preg_replace(
-                '/(<\/body[^>]*>)/i',
-                addcslashes($img, '\\$') . '\\1',
-                $response->getBody()
-            );
-            $response->setBody($newBody);
+                // This is taken from Requirements_Backend
+                $newBody = preg_replace(
+                    '/(<\/body[^>]*>)/i',
+                    addcslashes($img, '\\$') . '\\1',
+                    $response->getBody()
+                );
+                $response->setBody($newBody);
+            }
         } else {
             $currentModel->write();
         }
