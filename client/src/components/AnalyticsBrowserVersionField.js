@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import fieldHolder from 'components/FieldHolder/FieldHolder';
 import Chart from "react-apexcharts";
 import Skeleton from 'react-loading-skeleton'
-import fetch from 'isomorphic-fetch';
+import i18n from 'i18n';
 
 class AnalyticsBrowserVersionField extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            browsers: props.chartData
+            browsers: props.chartData,
+            fullCount: Object.values(props.chartData).reduce((prev, curr) => prev + curr, 0)
         }
     }
 
@@ -32,6 +33,14 @@ class AnalyticsBrowserVersionField extends Component {
             },
             legend: {
                 show: false
+            },
+            tooltip: {
+                y: {
+                    formatter: (value, opts) => {
+                        const percent = (value / this.state.fullCount) * 100;
+                        return percent.toFixed(0) + '%'
+                    }
+                }
             }
         };
     }
@@ -44,7 +53,7 @@ class AnalyticsBrowserVersionField extends Component {
                     { !!this.state.browsers && <Chart
                         options={this.getChartOptions()}
                         series={[{
-                            name: 'Browsers',
+                            name: i18n._t('Analytics.BrowserShare', 'Share'),
                             data: Object.values(this.state.browsers)
                         }]}
                         type="bar"

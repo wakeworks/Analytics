@@ -3,6 +3,8 @@ if(typeof(ss) == 'undefined' || typeof(ss.i18n) == 'undefined') {
 } else {
     ss.i18n.addDictionary('en', {
         'Analytics.DailyHits': 'Daily hits',
-        'Analytics.UniqueHits': 'Unique hits'
+        'Analytics.UniqueHits': 'Unique hits',
+        'Analytics.Hits': 'Hits',
+        'Analytics.BrowserShare': 'Share'
     });
 }

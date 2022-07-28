@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import fieldHolder from 'components/FieldHolder/FieldHolder';
 import Chart from "react-apexcharts";
 import Skeleton from 'react-loading-skeleton'
-import fetch from 'isomorphic-fetch';
+import i18n from 'i18n';
 
 class AnalyticsUrlsField extends Component {
     constructor(props) {
@@ -66,7 +66,7 @@ class AnalyticsUrlsField extends Component {
                     {!!this.state.urls && <Chart
                         options={this.getChartOptions()}
                         series={[{
-                            name: 'URLs',
+                            name: i18n._t('Analytics.Hits', 'Hits'),
                             data: Object.values(this.state.urls).map((val) => val.Count)
                         }]}
                         type="bar"
