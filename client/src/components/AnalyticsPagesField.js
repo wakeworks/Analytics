@@ -38,7 +38,7 @@ class AnalyticsPagesField extends Component {
                     enabled: true,
                     foreColor: '#005a93',
                     borderWidth: 0,
-                    opacity: 0.75
+                    opacity: 0.5
                 }
             },
             xaxis: {
@@ -66,9 +66,9 @@ class AnalyticsPagesField extends Component {
 
     getCategories() {
         if(this.state.type === 'pages') {
-            return Object.values(this.state.pages).map((val) => val.Title);
+            return this.state.pages.map((val) => val.Title);
         } else {
-            return Object.keys(this.state[this.state.type]);
+            return this.state.urls.map((val) => val.URL);
         }
     }
 

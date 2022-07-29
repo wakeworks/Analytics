@@ -46,12 +46,13 @@ class AnalyticsPagesField extends AnalyticsField
         $obj = [];
         foreach($result as $record) {
             $pageId = reset($record);
-            $pageTitle = next($record);
+            $pageTitle = next($record) ?? '';
             $count = next($record);
-            $obj[$pageId] = [
+            array_push($obj, [
+                'ID' => $pageId,
                 'Count' => $count,
                 'Title' => $pageTitle
-            ];
+            ]);
         }
 
         return $obj;
@@ -78,10 +79,11 @@ class AnalyticsPagesField extends AnalyticsField
             $url = next($record);
             $pageId = next($record);
             $count = next($record);
-            $obj[$url] = [
+            array_push($obj, [
+                'URL' => $url,
                 'Count' => $count,
                 'PageID' => $pageId
-            ];
+            ]);
         }
 
         return $obj;
