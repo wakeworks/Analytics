@@ -4,7 +4,7 @@ import AnalyticsBrowserField from 'components/AnalyticsBrowserField';
 import AnalyticsBrowserVersionField from 'components/AnalyticsBrowserVersionField';
 import AnalyticsDeviceField from 'components/AnalyticsDeviceField';
 import AnalyticsOSField from 'components/AnalyticsOSField';
-import AnalyticsUrlsField from 'components/AnalyticsUrlsField';
+import AnalyticsPagesField from 'components/AnalyticsPagesField';
 
 const registerComponents = () => {
   Injector.component.register('AnalyticsHitsField', AnalyticsHitsField);
@@ -12,7 +12,7 @@ const registerComponents = () => {
   Injector.component.register('AnalyticsBrowserVersionField', AnalyticsBrowserVersionField);
   Injector.component.register('AnalyticsDeviceField', AnalyticsDeviceField);
   Injector.component.register('AnalyticsOSField', AnalyticsOSField);
-  Injector.component.register('AnalyticsUrlsField', AnalyticsUrlsField);
+  Injector.component.register('AnalyticsPagesField', AnalyticsPagesField);
 };
 
 export default registerComponents;

@@ -13,7 +13,7 @@ use WakeWorks\Analytics\Forms\AnalyticsBrowserField;
 use WakeWorks\Analytics\Forms\AnalyticsBrowserVersionField;
 use WakeWorks\Analytics\Forms\AnalyticsDeviceField;
 use WakeWorks\Analytics\Forms\AnalyticsOSField;
-use WakeWorks\Analytics\Forms\AnalyticsUrlsField;
+use WakeWorks\Analytics\Forms\AnalyticsPagesField;
 use WakeWorks\Analytics\Models\AnalyticsLog;
 
 class AnalyticsController extends LeftAndMain implements PermissionProvider {
@@ -30,7 +30,7 @@ class AnalyticsController extends LeftAndMain implements PermissionProvider {
     public function AnalyticsForm() {
         $fields = new FieldList(FieldGroup::create(
             AnalyticsHitsField::create(),
-            AnalyticsUrlsField::create(),
+            AnalyticsPagesField::create(),
             AnalyticsDeviceField::create(),
             AnalyticsBrowserField::create(),
             AnalyticsBrowserVersionField::create(),

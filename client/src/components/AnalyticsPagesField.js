@@ -4,13 +4,19 @@ import Chart from "react-apexcharts";
 import Skeleton from 'react-loading-skeleton'
 import i18n from 'i18n';
 
-class AnalyticsUrlsField extends Component {
+class AnalyticsPagesField extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            urls: props.chartData
+            urls: props.chartData.URLs,
+            pages: props.chartData.Pages,
+            type: localStorage.getItem('AnalyticsPagesField.type') || 'pages'
         }
+
+        // Bind this to all functions because React
+        // ...
+        this.handleTypeChange = this.handleTypeChange.bind(this);
     }
 
     getChartOptions() {
@@ -36,7 +42,7 @@ class AnalyticsUrlsField extends Component {
                 }
             },
             xaxis: {
-                categories: Object.keys(this.state.urls)
+                categories: this.getCategories()
             },
             yaxis: {
                 labels: {
@@ -58,16 +64,46 @@ class AnalyticsUrlsField extends Component {
         };
     }
 
+    getCategories() {
+        if(this.state.type === 'pages') {
+            return Object.values(this.state.pages).map((val) => val.Title);
+        } else {
+            return Object.keys(this.state[this.state.type]);
+        }
+    }
+
+    handleTypeChange(event) {
+        this.setState({
+            type: event.target.value
+        });
+
+        localStorage.setItem('AnalyticsPagesField.type', event.target.value);
+    }
+
     render() {
         return (
             <div>
                 <div class="analytics-field__box">
-                    {!this.state.urls && <Skeleton count={10} />}
-                    {!!this.state.urls && <Chart
+                    <div class="choose-box">
+                        <div class="choose-box__wrapper">
+                            {
+                                [['pages', i18n._t('Analytics.Pages', 'Pages')], ['urls', i18n._t('Analytics.URLs', 'URLs')]].map((entry) => {
+                                    return (
+                                        <div className={"choose-box__field " + (this.state.type == entry[0] ? "active" : "") }>
+                                            <input type="radio" id={"type-" + entry[0]} name="type" value={entry[0]} onChange={this.handleTypeChange} />
+                                            <label for={"type-" + entry[0]}>{entry[1]}</label>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+
+                    {!!this.state[this.state.type] && <Chart
                         options={this.getChartOptions()}
                         series={[{
                             name: i18n._t('Analytics.Hits', 'Hits'),
-                            data: Object.values(this.state.urls).map((val) => val.Count)
+                            data: Object.values(this.state[this.state.type]).map((val) => val.Count)
                         }]}
                         type="bar"
                         width="500"
@@ -79,4 +115,4 @@ class AnalyticsUrlsField extends Component {
     }
 }
 
-export default fieldHolder(AnalyticsUrlsField);
+export default fieldHolder(AnalyticsPagesField);

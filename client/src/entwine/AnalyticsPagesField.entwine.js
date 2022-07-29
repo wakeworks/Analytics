@@ -5,10 +5,10 @@ import ReactDOM from 'react-dom';
 
 jQuery.entwine('ss', ($) => {
   // We're matching to the field based on class. We added the last class in the field
-  $('.js-injector-boot .form__field-holder .analytics-urls-field').entwine({
+  $('.js-injector-boot .form__field-holder .analytics-pages-field').entwine({
     onmatch() {
       // We're using the injector to create an instance of the react component we can use
-      const Component = loadComponent('AnalyticsUrlsField');
+      const Component = loadComponent('AnalyticsPagesField');
       // We've added the schema state to the div in the template above which we'll use as props
       const schemaState = this.data('state');
 

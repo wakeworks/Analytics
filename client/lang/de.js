@@ -5,6 +5,8 @@ if(typeof(ss) == 'undefined' || typeof(ss.i18n) == 'undefined') {
         'Analytics.DailyHits': 'Seitenaufrufe',
         'Analytics.UniqueHits': 'Besucher',
         'Analytics.Hits': 'Aufrufe',
-        'Analytics.BrowserShare': 'Anteil'
+        'Analytics.BrowserShare': 'Anteil',
+        'Analytics.Pages': 'Seiten',
+        'Analytics.URLs': 'URLs'
     });
 }

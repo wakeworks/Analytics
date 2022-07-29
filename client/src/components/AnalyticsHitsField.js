@@ -10,11 +10,12 @@ class AnalyticsHitsField extends Component {
 
         let populatedChartData = this.populateChartData(props.chartData);
 
+        let defaultDaysShown = localStorage.getItem('AnalyticsHitsField.daysShown') || 30;
         this.state = {
             ...populatedChartData,
-            daysShown: 30,
-            filteredHits: this.filterSeries(populatedChartData.hitsSeries, 30),
-            filteredUnique: this.filterSeries(populatedChartData.uniqueSeries, 30)
+            daysShown: defaultDaysShown,
+            filteredHits: this.filterSeries(populatedChartData.hitsSeries, defaultDaysShown),
+            filteredUnique: this.filterSeries(populatedChartData.uniqueSeries, defaultDaysShown)
         };
 
         // Bind this to all functions because React
@@ -93,18 +94,20 @@ class AnalyticsHitsField extends Component {
             filteredHits: this.filterSeries(this.state.hitsSeries, event.currentTarget.value),
             filteredUnique: this.filterSeries(this.state.uniqueSeries, event.currentTarget.value)
         });
+
+        localStorage.setItem('AnalyticsHitsField.daysShown', event.currentTarget.value);
     }
 
     render() {
         return (
             <div>
                 <div class="analytics-field__box">
-                    <div class="days-shown-box">
-                        <div class="days-shown-box__wrapper">
+                    <div class="choose-box">
+                        <div class="choose-box__wrapper">
                             {
                                 [[7, "7D"], [30, "1M"], [90, "3M"], [365, "1Y"], [0, "All"]].map((entry) => {
                                     return (
-                                        <div className={"days-shown-box__field " + (this.state.daysShown == entry[0] ? "active" : "") }>
+                                        <div className={"choose-box__field " + (this.state.daysShown == entry[0] ? "active" : "") }>
                                             <input type="radio" id={"daysshown-" + entry[0]} name="daysshown" value={entry[0]} onChange={this.handleDaysShownChange} />
                                             <label for={"daysshown-" + entry[0]}>{entry[1]}</label>
                                         </div>

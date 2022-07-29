@@ -5,24 +5,56 @@ namespace WakeWorks\Analytics\Forms;
 use SilverStripe\ORM\DataObject;
 use WakeWorks\Analytics\Models\AnalyticsLog;
 use WakeWorks\Analytics\Models\AnalyticsURL;
+use SilverStripe\CMS\Model\SiteTree;
 
-class AnalyticsUrlsField extends AnalyticsField
+class AnalyticsPagesField extends AnalyticsField
 {
-    protected $schemaComponent = 'AnalyticsUrlsField';
+    protected $schemaComponent = 'AnalyticsPagesField';
 
     public function __construct(string $title = null) {
         if(!$title) {
-            $title = _t(__CLASS__ . '.TITLE', 'Most viewed URLs');
+            $title = _t(__CLASS__ . '.TITLE', 'Most viewed pages');
         }
-        $this->addExtraClass('analytics-urls-field');
+        $this->addExtraClass('analytics-pages-field');
         parent::__construct($title, []);
     }
 
     public function getSchemaStateDefaults()
     {
         $state = parent::getSchemaStateDefaults();
-        $state['chartData'] = $this->getUrls();
+        $state['chartData'] = [
+            'Pages' => $this->getPages(),
+            'URLs' => $this->getUrls()
+        ];
         return $state;
+    }
+
+    private function getPages() {
+        $table = DataObject::getSchema()->tableName(AnalyticsLog::class);
+        $siteTreeTable = DataObject::getSchema()->tableName(SiteTree::class);
+        $query = parent::createSQLSelect();
+        $query->setSelect("\"{$table}\".\"PageID\"");
+        $query->addSelect("\"{$siteTreeTable}\".\"Title\"");
+        $query->addSelect("COUNT(*) as Count");
+        $query->addLeftJoin($siteTreeTable, "\"{$table}\".\"PageID\" = \"{$siteTreeTable}\".\"ID\"");
+        $query->addWhere("\"{$table}\".\"PageID\" != 0");
+        $query->setGroupBy("\"{$table}\".\"PageID\"");
+        $query->setOrderBy("Count", "DESC");
+        $query->setLimit(20);
+        $result = $query->execute();
+
+        $obj = [];
+        foreach($result as $record) {
+            $pageId = reset($record);
+            $pageTitle = next($record);
+            $count = next($record);
+            $obj[$pageId] = [
+                'Count' => $count,
+                'Title' => $pageTitle
+            ];
+        }
+
+        return $obj;
     }
 
     private function getUrls() {

@@ -5,6 +5,8 @@ if(typeof(ss) == 'undefined' || typeof(ss.i18n) == 'undefined') {
         'Analytics.DailyHits': 'Daily hits',
         'Analytics.UniqueHits': 'Unique hits',
         'Analytics.Hits': 'Hits',
-        'Analytics.BrowserShare': 'Share'
+        'Analytics.BrowserShare': 'Share',
+        'Analytics.Pages': 'Pages',
+        'Analytics.URLs': 'URLs'
     });
 }

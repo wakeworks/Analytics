@@ -12,5 +12,5 @@ de:
     TITLE: 'Tägliche Besucher'
   WakeWorks\Analytics\Forms\AnalyticsOSField:
     TITLE: 'Betriebssysteme'
-  WakeWorks\Analytics\Forms\AnalyticsUrlsField:
-    TITLE: 'Meistgesehene URLs'
+  WakeWorks\Analytics\Forms\AnalyticsPagesField:
+    TITLE: 'Meistgesehene Seiten'
