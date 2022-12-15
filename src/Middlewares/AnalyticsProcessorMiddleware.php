@@ -44,14 +44,7 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
             }
         }
 
-        $insertImageTracking = false;
-        if($this->config()->get('image_verification')) {
-            if($request->getVar('analyticsimage')) {
-                return $this->processAnalyticsImage($request);
-            } else {
-                $insertImageTracking = true;
-            }
-        }
+        $insertImageTracking = !!$this->config()->get('image_verification');
 
         $userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
 
@@ -108,7 +101,7 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
             $contentTypeHeader = strtolower($response->getHeader('Content-Type'));
             if(strpos($contentTypeHeader, 'text/html') !== false) {
                 $uuid = AnalyticsVerification::generate_and_write($currentModel)->UUID;
-                $img = '<img src="/?analyticsimage=' . urlencode($uuid) . '" style="position: absolute; visibility: hidden;" alt="" />' . "\n";
+                $img = '<img src="/_analytics/imageverification/' . urlencode($uuid) . '" style="position: absolute; visibility: hidden;" alt="" />' . "\n";
 
                 // This is taken from Requirements_Backend
                 $newBody = preg_replace(
@@ -123,25 +116,6 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         }
 
         return $response;
-    }
-
-    public function processAnalyticsImage(HTTPRequest $request) {
-        // We set the session in the request before, so if it's not there, it's probably a bot.
-        if(!$request->getSession()->get(__CLASS__ . 'Visited')) {
-            return new HTTPResponse('', 204);
-        }
-
-        $uuid = $request->getVar('analyticsimage');
-        $verification = AnalyticsVerification::get_by_uuid($uuid);
-        if(!$verification) {
-            return new HTTPResponse('Bad request', 400);
-        }
-
-        $model = $verification->dataToAnalyticsLog();
-        $model->write();
-        $verification->delete();
-        AnalyticsVerification::garbage_collection();
-        return new HTTPResponse('', 204);
     }
 
     public function isAdminUrl($url)

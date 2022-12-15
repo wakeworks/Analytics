@@ -1,0 +1,9 @@
+---
+Name: analyticsroutes
+After:
+  - '#rootroutes'
+  - '#coreroutes'
+---
+SilverStripe\Control\Director:
+  rules:
+    '_analytics': 'WakeWorks\Analytics\Controllers\AnalyticsVerificationController'
