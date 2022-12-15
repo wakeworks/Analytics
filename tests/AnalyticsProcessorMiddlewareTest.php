@@ -11,18 +11,22 @@ class AnalyticsProcessorMiddlewareTest extends FunctionalTest
 
     protected static $fixture_file = 'AnalyticsProcessorMiddlewareTest.yml';
 
+    private $homePage = null;
+
     public function setUp(): void {
         parent::setUp();
 
-        $homePage = $this->objFromFixture('Page', 'home');
-        $homePage->doPublish();
+        $this->homePage = $this->objFromFixture('Page', 'home');
+        $this->homePage->doPublish();
 
         Config::modify()->update(AnalyticsProcessorMiddleware::class, 'image_verification', false);
 
         $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36';
+    }
 
+    public function testIgnorePages() {
         // 200
-        $this->get($homePage->RelativeLink());
+        $this->get($this->homePage->RelativeLink());
 
         // 302
         $this->get('admin/');
@@ -34,11 +38,10 @@ class AnalyticsProcessorMiddlewareTest extends FunctionalTest
         $this->logInWithPermission('ADMIN');
         $this->get('admin/pages');
 
-        // ignore Security ping
+        // Ignore Security ping
         $this->get('Security/ping');
-    }
 
-    public function testIgnorePages() {
+        $this->logOut();
         $this->assertEquals(1, AnalyticsLog::get()->count());
     }
 
@@ -49,8 +52,26 @@ class AnalyticsProcessorMiddlewareTest extends FunctionalTest
         // Call home
         $this->get('home');
 
+        Config::modify()->update(AnalyticsProcessorMiddleware::class, 'enabled', true);
+
         // Check if new log has been created
         $this->assertEquals($countBefore, AnalyticsLog::get()->count());
+    }
+
+    public function testUniqueVisitors() {
+        // Make sure to clear session
+        $this->logOut();
+        $countBefore = AnalyticsLog::get()->count();
+
+        $this->get($this->homePage->RelativeLink());
+        $this->assertEquals($countBefore + 1, AnalyticsLog::get()->count());
+        $this->get($this->homePage->RelativeLink());
+        $this->get($this->homePage->RelativeLink());
+        $this->assertEquals($countBefore + 1, AnalyticsLog::get()->filter(['IsFirstVisit' => true])->count());
+
+        $this->logOut();
+        $this->get($this->homePage->RelativeLink());
+        $this->assertEquals($countBefore + 2, AnalyticsLog::get()->filter(['IsFirstVisit' => true])->count());
     }
 
     public function testImageTracking() {
@@ -58,11 +79,11 @@ class AnalyticsProcessorMiddlewareTest extends FunctionalTest
 
         // Check if tracking code is inserted into html
         $body = $this->get('home')->getBody();
-        $this->assertNotFalse(preg_match("/<img src=\"\\/\\?analyticsimage=(.*?)\"/", $body, $matches));
+        $this->assertNotFalse(preg_match("/<img src=\"\\/_analytics\\/imageverification\\/(.*?)\"/", $body, $matches));
         $this->assertArrayHasKey(1, $matches);
 
         // Call verification url
-        $this->get('/?analyticsimage=' . $matches[1]);
+        $this->get('/_analytics/imageverification/' . $matches[1]);
 
         // Check if no new log is created for the image verification & check that it's verified
         $nextModel = AnalyticsLog::get()->sort('ID', 'DESC')->first();
