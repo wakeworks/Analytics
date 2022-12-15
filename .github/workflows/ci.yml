@@ -8,3 +8,4 @@ jobs:
     uses: silverstripe/gha-ci/.github/workflows/ci.yml@v1
     with:
       phplinting: false
+      js: false
