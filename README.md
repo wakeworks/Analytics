@@ -1,5 +1,4 @@
 # Analytics for Silverstripe
-## Currently in beta
 
 <br>
 
@@ -15,10 +14,10 @@ This module enables basic analytics in Silverstripe without saving identifying d
 
 ## Requirements
 
-* silverstripe/framework ^4.0
-* silverstripe/admin ^1.0
+* silverstripe/framework ^5
+* silverstripe/admin ^2
 
-This module was only tested on >= 4.9.
+For Silverstripe 4, check out version/branch 1.
 
 ## Installation
 

@@ -31,7 +31,6 @@ const config = [
       path: PATHS.DIST,
       filename: 'js/[name].js',
     },
-    devtool: (ENV !== 'production') ? 'source-map' : '',
     resolve: resolveJS(ENV, PATHS),
     externals,
     module: moduleJS(ENV, PATHS),
@@ -43,12 +42,10 @@ const config = [
       bundle: `${PATHS.SRC}/bundles/bundle.scss`,
     },
     output: {
-      path: PATHS.DIST,
-      filename: 'styles/[name].css',
+      path: PATHS.DIST
     },
-    devtool: (ENV !== 'production') ? 'source-map' : '',
     module: moduleCSS(ENV, PATHS),
-    plugins: pluginCSS(ENV, PATHS),
+    plugins: pluginCSS(ENV, PATHS, 'styles/[name].css'),
   },
 ];
 
