@@ -18,14 +18,14 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "^4.4",
-        "silverstripe/admin": "^1",
-        "silverstripe/vendor-plugin": "^1",
+        "silverstripe/framework": "^5",
+        "silverstripe/admin": "^2",
+        "silverstripe/vendor-plugin": "^2",
         "matomo/device-detector": "^4.3",
         "ramsey/uuid": "^4"
     },
     "require-dev": {
-        "silverstripe/recipe-testing": "^2.0"
+        "silverstripe/recipe-testing": "^3.0"
     },
     "autoload": {
         "psr-4": {

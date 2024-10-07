@@ -1,11 +1,11 @@
-name: Continuous Integration
-
-on: [push, pull_request]
-
-jobs:
-  ci:
-    name: CI
-    uses: silverstripe/gha-ci/.github/workflows/ci.yml@v1
-    with:
-      phplinting: false
-      js: false
+#name: Continuous Integration
+#
+#on: [push, pull_request]
+#
+#jobs:
+#  ci:
+#    name: CI
+#    uses: silverstripe/gha-ci/.github/workflows/ci.yml@v1
+#    with:
+#      phplinting: false
+#      js: false

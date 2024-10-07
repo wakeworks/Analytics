@@ -37,11 +37,10 @@ class AnalyticsHitsField extends AnalyticsField
         $result = $query->execute();
 
         $map = $result->map();
-        $result->rewind();
-        $createdValues = $result->column('Date');
+        $dates = array_keys($map);
         return [
-            'Start' => count($createdValues) > 0 ? $createdValues[0] : null,
-            'End' => count($createdValues) > 0 ? $createdValues[count($createdValues) - 1] : null,
+            'Start' => count($dates) > 0 ? $dates[0] : null,
+            'End' => count($dates) > 0 ? $dates[count($dates) - 1] : null,
             'Days' => $map
         ];
     }
