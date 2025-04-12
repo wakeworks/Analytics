@@ -6,6 +6,7 @@ use SilverStripe\ORM\DataObject;
 use WakeWorks\Analytics\Models\AnalyticsLog;
 use WakeWorks\Analytics\Models\AnalyticsURL;
 use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\ORM\DataQuery;
 
 class AnalyticsPagesField extends AnalyticsField
 {
@@ -30,13 +31,20 @@ class AnalyticsPagesField extends AnalyticsField
     }
 
     private function getPages() {
+        $params = [];
         $table = DataObject::getSchema()->tableName(AnalyticsLog::class);
         $siteTreeTable = DataObject::getSchema()->tableName(SiteTree::class);
         $query = parent::createSQLSelect();
         $query->setSelect("\"{$table}\".\"PageID\"");
         $query->addSelect("\"{$siteTreeTable}\".\"Title\"");
         $query->addSelect("COUNT(*) as Count");
-        $query->addLeftJoin($siteTreeTable, "\"{$table}\".\"PageID\" = \"{$siteTreeTable}\".\"ID\"");
+        $query->addLeftJoin(
+            '(' . (new DataQuery(SiteTree::class))->sql($params) . ')',
+            "\"{$table}\".\"PageID\" = \"{$siteTreeTable}\".\"ID\"",
+            $siteTreeTable,
+            20,
+            $params
+        );
         $query->addWhere("\"{$table}\".\"PageID\" != 0");
         $query->setGroupBy("\"{$table}\".\"PageID\"");
         $query->setOrderBy("Count", "DESC");
