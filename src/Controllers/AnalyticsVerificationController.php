@@ -2,6 +2,7 @@
 
 namespace WakeWorks\Analytics\Controllers;
 
+use Override;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
@@ -20,6 +21,7 @@ class AnalyticsVerificationController extends Controller {
         'imageverification/$UUID' => 'imageverification'
     ];
 
+    #[Override]
     protected function init() {
         parent::init();
 

@@ -7,8 +7,9 @@ use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\Middleware\HTTPMiddleware;
 use DeviceDetector\DeviceDetector;
 use SilverStripe\Admin\AdminRootController;
+use SilverStripe\PolyExecution\PolyOutput;
+use Symfony\Component\Console\Input\ArrayInput;
 use WakeWorks\Analytics\Models\AnalyticsLog;
-use SilverStripe\Control\HTTPResponse;
 use SilverStripe\Core\Config\Configurable;
 use SilverStripe\Core\Injector\Injector;
 use WakeWorks\Analytics\Analytics;
@@ -40,13 +41,16 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
         if(is_int($this->config()->get('gc_divisor')) && $this->config()->get('gc_divisor') > 0) {
             $randomNumber = mt_rand(1, $this->config()->get('gc_divisor'));
             if($randomNumber === 1) {
-                (new AnalyticsGarbageCollectionTask())->run($request, true);
+                (new AnalyticsGarbageCollectionTask())->run(
+                    new ArrayInput([]),
+                    new PolyOutput(PolyOutput::FORMAT_HTML, PolyOutput::VERBOSITY_SILENT)
+                );
             }
         }
 
         $insertImageTracking = !!$this->config()->get('image_verification');
 
-        $userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+        $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
         $deviceDetector = new DeviceDetector($userAgent);
         $deviceDetector->setCache(new DeviceDetectorCache(Injector::inst()->get(CacheInterface::class . '.analytics')));
@@ -92,22 +96,22 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
 
         $currentModel->processAfterDelegate($request, $response);
 
-        if(!$request->getSession()->get(__CLASS__ . 'Visited')) {
+        if(!$request->getSession()->get(self::class . 'Visited')) {
             $currentModel->IsFirstVisit = true;
-            $request->getSession()->set(__CLASS__ . 'Visited', true);
+            $request->getSession()->set(self::class . 'Visited', true);
         }
 
         if($insertImageTracking) {
-            $contentTypeHeader = strtolower($response->getHeader('Content-Type'));
-            if(strpos($contentTypeHeader, 'text/html') !== false) {
+            $contentTypeHeader = strtolower((string) $response->getHeader('Content-Type'));
+            if(str_contains($contentTypeHeader, 'text/html')) {
                 $uuid = AnalyticsVerification::generate_and_write($currentModel)->UUID;
-                $img = '<img src="/_analytics/imageverification/' . urlencode($uuid) . '" style="position: absolute; visibility: hidden;" alt="" />' . "\n";
+                $img = '<img src="/_analytics/imageverification/' . urlencode((string) $uuid) . '" style="position: absolute; visibility: hidden;" alt="" />' . "\n";
 
                 // This is taken from Requirements_Backend
                 $newBody = preg_replace(
                     '/(<\/body[^>]*>)/i',
                     addcslashes($img, '\\$') . '\\1',
-                    $response->getBody()
+                    (string) $response->getBody()
                 );
                 $response->setBody($newBody);
             }
@@ -126,11 +130,11 @@ class AnalyticsProcessorMiddleware implements HTTPMiddleware {
             $adminUrl = 'admin';
         }
 
-        return strpos($url, $adminUrl) === 0;
+        return str_starts_with((string) $url, (string) $adminUrl);
     }
 
     public function isBlockedUrl($url) {
-        return strpos($url, 'Security') === 0 && strpos($url, 'Security/login') !== 0 && strpos($url, 'UserDefinedFormController/ping');
+        return str_starts_with((string) $url, 'Security') && !str_starts_with((string) $url, 'Security/login') && strpos((string) $url, 'UserDefinedFormController/ping');
     }
 
     public function isAllowedStatusCode($statusCode) {

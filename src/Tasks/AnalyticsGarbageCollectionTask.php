@@ -6,23 +6,24 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\Queries\SQLDelete;
 use WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware;
 use WakeWorks\Analytics\Models\AnalyticsLog;
+use SilverStripe\PolyExecution\PolyOutput;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
 
 class AnalyticsGarbageCollectionTask extends BuildTask {
 
-    private static $segment = 'AnalyticsGarbageCollectionTask';
+    protected static string $commandName = 'analytics-garbage-collection-task';
 
-    protected $title = 'Remove old or unverified analytic logs';
+    protected string $title = 'Remove old or unverified analytic logs';
 
-    public function run($request, $silent = false)
+    protected function execute(InputInterface $input, PolyOutput $output): int
     {
         $preserve_for_days = Config::inst()->get(AnalyticsProcessorMiddleware::class, 'preserve_for_days');
         $time_start = microtime(true);
 
         if(!is_int($preserve_for_days) || $preserve_for_days < 0) {
-            if(!$silent) {
-                user_error('preserve_for_days is not an integer.');
-            }
-            return;
+            $output->writeln('preserve_for_days is not an integer.');
+            return Command::FAILURE;
         }
 
         $timeDiff = new DateInterval('P' . $preserve_for_days . 'D');
@@ -38,12 +39,13 @@ class AnalyticsGarbageCollectionTask extends BuildTask {
         $query->addWhere("\"{$table}\".\"Date\" < '{$removeDate->format('Y-m-d')}'");
         $query->execute();
 
-        if(!$silent) {
-            echo 'Deleted ' . ($countBefore - AnalyticsLog::get()->count()) . ' rows in ' . number_format((microtime(true) - $time_start), 2) . 's.';
-        }
+        $output->writeln('Deleted ' . ($countBefore - AnalyticsLog::get()->count()) . ' rows in ' . number_format((microtime(true) - $time_start), 2) . 's.');
+        return Command::SUCCESS;
     }
 
-    public function getDescription() {
+    #[Override]
+    public static function getDescription(): string
+    {
         $description = "Removes the following analytic logs:\n\n";
         $description .= '- older than ' . Config::inst()->get(AnalyticsProcessorMiddleware::class, 'preserve_for_days') . " days\n";
 

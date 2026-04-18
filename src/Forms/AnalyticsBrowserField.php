@@ -2,6 +2,7 @@
 
 namespace WakeWorks\Analytics\Forms;
 
+use Override;
 use DeviceDetector\DeviceDetector;
 use DeviceDetector\Parser\Client\Browser;
 use SilverStripe\ORM\DataObject;
@@ -13,12 +14,13 @@ class AnalyticsBrowserField extends AnalyticsField
 
     public function __construct(string $title = null) {
         if(!$title) {
-            $title = _t(__CLASS__ . '.TITLE', 'Browsers');
+            $title = _t(self::class . '.TITLE', 'Browsers');
         }
         $this->addExtraClass('analytics-browser-field');
         parent::__construct($title, []);
     }
 
+    #[Override]
     public function getSchemaStateDefaults()
     {
         $state = parent::getSchemaStateDefaults();

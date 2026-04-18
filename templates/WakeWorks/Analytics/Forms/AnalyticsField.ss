@@ -1,2 +1,2 @@
-<div $AttributesHTML data-state="$SchemaState.JSON">
+<div $AttributesHTML $SchemaAttributesHtml>
 </div>

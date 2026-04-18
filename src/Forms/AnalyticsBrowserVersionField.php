@@ -2,6 +2,7 @@
 
 namespace WakeWorks\Analytics\Forms;
 
+use Override;
 use DeviceDetector\DeviceDetector;
 use DeviceDetector\Parser\Client\Browser;
 use SilverStripe\ORM\DataObject;
@@ -13,12 +14,13 @@ class AnalyticsBrowserVersionField extends AnalyticsField
 
     public function __construct(string $title = null) {
         if(!$title) {
-            $title = _t(__CLASS__ . '.TITLE', 'Browser versions');
+            $title = _t(self::class . '.TITLE', 'Browser versions');
         }
         $this->addExtraClass('analytics-browser-version-field');
         parent::__construct($title, []);
     }
 
+    #[Override]
     public function getSchemaStateDefaults()
     {
         $state = parent::getSchemaStateDefaults();

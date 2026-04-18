@@ -17,9 +17,9 @@ class AnalyticsProcessorMiddlewareTest extends FunctionalTest
         parent::setUp();
 
         $this->homePage = $this->objFromFixture('Page', 'home');
-        $this->homePage->doPublish();
+        $this->homePage->publishRecursive();
 
-        Config::modify()->update(AnalyticsProcessorMiddleware::class, 'image_verification', false);
+        Config::modify()->set(AnalyticsProcessorMiddleware::class, 'image_verification', false);
 
         $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36';
     }
@@ -46,13 +46,13 @@ class AnalyticsProcessorMiddlewareTest extends FunctionalTest
     }
 
     public function testDisable() {
-        Config::modify()->update(AnalyticsProcessorMiddleware::class, 'enabled', false);
+        Config::modify()->set(AnalyticsProcessorMiddleware::class, 'enabled', false);
         $countBefore = AnalyticsLog::get()->count();
 
         // Call home
         $this->get('home');
 
-        Config::modify()->update(AnalyticsProcessorMiddleware::class, 'enabled', true);
+        Config::modify()->set(AnalyticsProcessorMiddleware::class, 'enabled', true);
 
         // Check if new log has been created
         $this->assertEquals($countBefore, AnalyticsLog::get()->count());
@@ -75,7 +75,7 @@ class AnalyticsProcessorMiddlewareTest extends FunctionalTest
     }
 
     public function testImageTracking() {
-        Config::modify()->update(AnalyticsProcessorMiddleware::class, 'image_verification', true);
+        Config::modify()->set(AnalyticsProcessorMiddleware::class, 'image_verification', true);
 
         // Check if tracking code is inserted into html
         $body = $this->get('home')->getBody();
@@ -91,8 +91,8 @@ class AnalyticsProcessorMiddlewareTest extends FunctionalTest
     }
 
     public function testGC() {
-        Config::modify()->update(AnalyticsProcessorMiddleware::class, 'gc_divisor', 1);
-        Config::modify()->update(AnalyticsProcessorMiddleware::class, 'preserve_for_days', 365);
+        Config::modify()->set(AnalyticsProcessorMiddleware::class, 'gc_divisor', 1);
+        Config::modify()->set(AnalyticsProcessorMiddleware::class, 'preserve_for_days', 365);
 
         $countBefore = AnalyticsLog::get()->count();
         $this->get('home');

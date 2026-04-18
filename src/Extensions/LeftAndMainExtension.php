@@ -7,7 +7,7 @@ use SilverStripe\View\Requirements;
 
 class LeftAndMainExtension extends Extension {
 
-    public function init()
+    public function onInit()
     {
         Requirements::add_i18n_javascript('wakeworks/analytics:client/lang', false);
         Requirements::javascript('wakeworks/analytics:client/dist/js/bundle.js');

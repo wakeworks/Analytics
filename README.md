@@ -1,11 +1,5 @@
 # Analytics for Silverstripe
 
-<br>
-
-![Packagist Version](https://img.shields.io/packagist/v/wakeworks/Analytics?style=flat-square)
-![GitHub](https://img.shields.io/github/license/wakeworks/Analytics?style=flat-square)
-![Scrutinizer code quality (GitHub/Bitbucket)](https://img.shields.io/scrutinizer/quality/g/Zazama/Analytics?style=flat-square)
-
 ## Introduction
 
 This module enables basic analytics in Silverstripe without saving identifying data.
@@ -14,10 +8,10 @@ This module enables basic analytics in Silverstripe without saving identifying d
 
 ## Requirements
 
-* silverstripe/framework ^5
-* silverstripe/admin ^2
+* silverstripe/framework ^6
+* silverstripe/admin ^3
 
-For Silverstripe 4, check out version/branch 1.
+For Silverstripe 5, check out version/branch 2, for Silverstripe 4, check out version/branch 1.
 
 ## Installation
 
