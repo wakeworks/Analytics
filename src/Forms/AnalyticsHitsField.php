@@ -2,6 +2,7 @@
 
 namespace WakeWorks\Analytics\Forms;
 
+use Override;
 use SilverStripe\ORM\DataObject;
 use WakeWorks\Analytics\Models\AnalyticsLog;
 
@@ -11,12 +12,13 @@ class AnalyticsHitsField extends AnalyticsField
 
     public function __construct(string $title = null) {
         if(!$title) {
-            $title = _t(__CLASS__ . '.TITLE', 'Daily visitors');
+            $title = _t(self::class . '.TITLE', 'Daily visitors');
         }
         $this->addExtraClass('analytics-hits-field');
         parent::__construct($title, []);
     }
 
+    #[Override]
     public function getSchemaStateDefaults()
     {
         $state = parent::getSchemaStateDefaults();

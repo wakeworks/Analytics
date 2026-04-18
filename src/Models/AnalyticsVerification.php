@@ -2,6 +2,8 @@
 
 namespace WakeWorks\Analytics\Models;
 
+use DateTime;
+use DateInterval;
 use SilverStripe\ORM\DataObject;
 use Ramsey\Uuid\Uuid;
 use SilverStripe\ORM\Queries\SQLDelete;
@@ -36,8 +38,8 @@ class AnalyticsVerification extends DataObject {
     }
 
     public static function garbage_collection() {
-        $fiveMinutesAgo = new \DateTime();
-        $fiveMinutesAgo->sub(new \DateInterval('PT' . '5' . 'M'));
+        $fiveMinutesAgo = new DateTime();
+        $fiveMinutesAgo->sub(new DateInterval('PT' . '5' . 'M'));
 
         $table = DataObject::getSchema()->tableName(self::class);
         $query = new SQLDelete();

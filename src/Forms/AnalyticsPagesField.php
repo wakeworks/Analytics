@@ -2,6 +2,7 @@
 
 namespace WakeWorks\Analytics\Forms;
 
+use Override;
 use SilverStripe\ORM\DataObject;
 use WakeWorks\Analytics\Models\AnalyticsLog;
 use WakeWorks\Analytics\Models\AnalyticsURL;
@@ -14,12 +15,13 @@ class AnalyticsPagesField extends AnalyticsField
 
     public function __construct(string $title = null) {
         if(!$title) {
-            $title = _t(__CLASS__ . '.TITLE', 'Most viewed pages');
+            $title = _t(self::class . '.TITLE', 'Most viewed pages');
         }
         $this->addExtraClass('analytics-pages-field');
         parent::__construct($title, []);
     }
 
+    #[Override]
     public function getSchemaStateDefaults()
     {
         $state = parent::getSchemaStateDefaults();

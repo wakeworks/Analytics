@@ -2,13 +2,13 @@
 
 namespace WakeWorks\Analytics\Extensions;
 
+use SilverStripe\Core\Extension;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\HTTPResponse;
-use SilverStripe\ORM\DataExtension;
 use SilverStripe\Subsites\Model\Subsite;
 use SilverStripe\Subsites\State\SubsiteState;
 
-class SubsitesExtension extends DataExtension {
+class SubsitesExtension extends Extension {
     private static $has_one = [
         'Subsite' => Subsite::class
     ];

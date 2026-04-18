@@ -34,10 +34,10 @@ class AnalyticsFieldsTest extends FunctionalTest
         parent::setUp();
 
         $homePage = $this->objFromFixture('Page', 'home');
-        $homePage->doPublish();
+        $homePage->publishRecursive();
         $this->get('home');
 
-        Config::modify()->update(AnalyticsProcessorMiddleware::class, 'image_verification', false);
+        Config::modify()->set(AnalyticsProcessorMiddleware::class, 'image_verification', false);
 
         foreach($this->user_agents as $userAgent) {
             $_SERVER['HTTP_USER_AGENT'] = $userAgent;

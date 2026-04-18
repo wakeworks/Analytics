@@ -2,6 +2,7 @@
 
 namespace WakeWorks\Analytics\Forms;
 
+use Override;
 use DeviceDetector\DeviceDetector;
 use DeviceDetector\Parser\OperatingSystem;
 use SilverStripe\ORM\DataObject;
@@ -13,12 +14,13 @@ class AnalyticsOSField extends AnalyticsField
 
     public function __construct(string $title = null) {
         if(!$title) {
-            $title = _t(__CLASS__ . '.TITLE', 'Operating Systems');
+            $title = _t(self::class . '.TITLE', 'Operating Systems');
         }
         $this->addExtraClass('analytics-os-field');
         parent::__construct($title, []);
     }
 
+    #[Override]
     public function getSchemaStateDefaults()
     {
         $state = parent::getSchemaStateDefaults();

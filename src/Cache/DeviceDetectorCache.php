@@ -6,10 +6,8 @@ use DeviceDetector\Cache\CacheInterface;
 
 class DeviceDetectorCache implements CacheInterface
 {
-    private $cache = null;
-    
-    public function __construct($cache) {
-        $this->cache = $cache;
+    public function __construct(private $cache)
+    {
     }
 
     public function contains($id): bool

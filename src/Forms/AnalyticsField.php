@@ -2,13 +2,12 @@
 
 namespace WakeWorks\Analytics\Forms;
 
-use SilverStripe\Core\Config\Config;
+use Override;
 use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FormField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\Queries\SQLSelect;
 use WakeWorks\Analytics\Extensions\SubsitesExtension;
-use WakeWorks\Analytics\Middlewares\AnalyticsProcessorMiddleware;
 use WakeWorks\Analytics\Models\AnalyticsLog;
 
 class AnalyticsField extends FieldGroup
@@ -17,11 +16,12 @@ class AnalyticsField extends FieldGroup
 
     public function __construct(string $title = null) {
         $this->addExtraClass('analytics-field');
-        $this->setFieldHolderTemplate('WakeWorks\\Analytics\\Forms\\AnalyticsField');
-        $this->setSmallFieldHolderTemplate('WakeWorks\\Analytics\\Forms\\AnalyticsField');
+        $this->setFieldHolderTemplate(AnalyticsField::class);
+        $this->setSmallFieldHolderTemplate(AnalyticsField::class);
         parent::__construct($title, []);
     }
 
+    #[Override]
     public function getSchemaStateDefaults()
     {
         $state = parent::getSchemaStateDefaults();

@@ -2,6 +2,7 @@
 
 namespace WakeWorks\Analytics\Controllers;
 
+use Override;
 use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Forms\FieldGroup;
 use SilverStripe\Forms\FieldList;
@@ -23,6 +24,7 @@ class AnalyticsController extends LeftAndMain implements PermissionProvider {
     private static $menu_icon_class = 'font-icon-chart-pie';
     private static $required_permission_codes = 'CMS_ACCESS_Analytics';
 
+    #[Override]
     public function init() {
         parent::init();
     }
@@ -40,6 +42,7 @@ class AnalyticsController extends LeftAndMain implements PermissionProvider {
         return new Form($this, 'AnalyticsForm', $fields, null, null);
     }
 
+    #[Override]
     public function providePermissions() {
         return [
             self::$required_permission_codes => [
@@ -50,7 +53,7 @@ class AnalyticsController extends LeftAndMain implements PermissionProvider {
                 ),
                 'category' => _t('SilverStripe\\Security\\Permission.CMS_ACCESS_CATEGORY', 'CMS Access'),
                 'help' => _t(
-                    __CLASS__.'.ACCESS_HELP',
+                    self::class.'.ACCESS_HELP',
                     'Allow viewing of the analytics section.'
                 )
             ]
