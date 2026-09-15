@@ -30,7 +30,7 @@ class ControllerExtension extends Extension {
             $analytics->disable();
         }
 
-        if(($currentPage = Director::get_current_page()) && $currentModel) {
+        if(($currentPage = Director::get_current_page()) && $currentModel && $currentPage->exists()) {
             $currentModel->PageID = $currentPage->ID;
         }
     }
